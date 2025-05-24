@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Download, ExternalLink, Award } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Certificate {
   id: string; // Token ID
