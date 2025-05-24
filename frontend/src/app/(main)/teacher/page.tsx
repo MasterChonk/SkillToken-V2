@@ -1,4 +1,3 @@
-
 "use client";
 
 import { CreateCourseForm } from "@/components/teacher/CreateCourseForm";
@@ -9,11 +8,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUser } from "@/contexts/UserContext";
-import { BookMarked, UsersRound, Award, Loader2 } from "lucide-react";
+import { BookMarked, UsersRound, Award, Loader2, Building2 } from "lucide-react";
 import Link from "next/link";
+import { createOrganization } from "@/utils/contract";
 
 export default function TeacherPage() {
   const { address, isLoading, role } = useUser();
+
+  const handleCreateOrganisation = () => {
+    // Add your organization creation logic here
+    createOrganization();
+    // Example: Open a modal, navigate to a new page, or call an API
+    // You could also add state management, form handling, etc.
+  };
 
   if (isLoading) {
     return (
@@ -46,8 +53,19 @@ export default function TeacherPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <header className="mb-10">
-        <h1 className="text-4xl font-bold text-primary">Teacher Dashboard</h1>
-        <p className="text-lg text-muted-foreground">Manage your courses, issue certificates, and delegate access.</p>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-4xl font-bold text-primary">Teacher Dashboard</h1>
+            <p className="text-lg text-muted-foreground">Manage your courses, issue certificates, and delegate access.</p>
+          </div>
+          <Button 
+            onClick={handleCreateOrganisation}
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+          >
+            <Building2 className="h-5 w-5" />
+            Create Organisation
+          </Button>
+        </div>
       </header>
 
       <Tabs defaultValue="my-courses" className="w-full">

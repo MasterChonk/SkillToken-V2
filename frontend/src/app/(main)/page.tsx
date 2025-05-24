@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, BookUser, CheckCircle, Shield, Users, Zap, Trophy, Globe, Star, ChevronRight, Play, Download, Award } from "lucide-react";
 import Link from "next/link";
+import { ethersInitialize, connectWallet, createOrganization,  getLiquidityEvents} from "@/utils/contract";
+
+await ethersInitialize();
 
 export default function HomePage() {
   return (

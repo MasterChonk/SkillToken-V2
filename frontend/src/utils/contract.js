@@ -18,7 +18,7 @@ export async function ethersInitialize() {
           throw new Error("ABI not found");
         }
     
-        CONTRACT_ABI = artifact.abi;
+        global.CONTRACT_ABI = artifact.abi;
       } catch (error) {
         console.error("Error in ABI:", error.message);
       }
@@ -36,7 +36,7 @@ export async function ethersInitialize() {
           throw new Error("Address not found");
         }
       
-        CONTRACT_ADDRESS = artifact.address;
+        global.CONTRACT_ADDRESS = artifact.address;
       } catch (error) {
         console.error("Address in ABI:", error.message);
       }
@@ -46,15 +46,15 @@ export async function ethersInitialize() {
   window.ethereum?.on('accountsChanged', async (accounts) => {
     if (accounts.length === 0) {
       console.log("Wallet disabled");
-      currentAccount = null;
+      global.currentAccount = null;
       return;
     }
 
-    currentAccount = accounts[0];
-    provider = new ethers.BrowserProvider(window.ethereum);
-    signer = await provider.getSigner();
-    signer = await provider.getSigner();
-    contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+    global.currentAccount = accounts[0];
+    global.provider = new ethers.BrowserProvider(window.ethereum);
+    global.signer = await provider.getSigner();
+    global.signer = await provider.getSigner();
+    global.contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
     console.log("Acount changed to:", currentAccount);
   });
 
@@ -81,11 +81,11 @@ export async function ethersInitialize() {
 
     try {
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      currentAccount = accounts[0];
+      global.currentAccount = accounts[0];
 
-      provider = new ethers.BrowserProvider(window.ethereum);
-      signer = await provider.getSigner();
-      contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+      global.provider = new ethers.BrowserProvider(window.ethereum);
+      global.signer = await provider.getSigner();
+      global.contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
       console.log("Conected to MetaMask:", currentAccount);
     } catch (error) {
@@ -122,14 +122,14 @@ export async function ethersInitialize() {
 
 export async function createOrganization() {
     //input if you need value
-  const text = document.getElementById("createOrg").value;
-  if (!contract) {
-    contract = await connectWallet();
+//   const text = document.getElementById("createOrg").value;
+  if (!global.contract) {
+    global.contract = await connectWallet();
   }
   let tx, reason;
   try {
     //change to name of function in solidity, give all required parameters for solidity function
-    tx = await contract.createOrganization(text);
+    tx = await global.contract.createOrganization("Test Organization");
   } catch (error) {
     reason = error.reason;
   }
@@ -138,6 +138,7 @@ export async function createOrganization() {
 
   } else if(reason) {
     //code if action in solidity not allowed
+    console.log(reason);
 
   } else {
     console.log("network error")
