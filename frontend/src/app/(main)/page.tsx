@@ -36,7 +36,7 @@ export default function HomePage() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-            <Button asChild className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25"><Link href="/courses">Start Learning</Link></Button>
+            <Button asChild className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25"><Link href="/student">Start Learning</Link></Button>
             <Button asChild className="px-8 py-4 border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black text-lg font-semibold rounded-full transition-all duration-300 backdrop-blur-sm bg-transparent"><Link href="/governance"><span className="flex items-center"><Users className="mr-2 h-6 w-6"/>Join the DAO</span></Link></Button>
           </div>
           
@@ -216,7 +216,7 @@ export default function HomePage() {
                   </div>
                 </div>
                 
-                <Button asChild className="px-8 py-4 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105"><Link href="/certificates"><span className="flex items-center"><Download className="mr-2 h-6 w-6"/>Get Certificate</span></Link></Button>
+                <Button asChild className="px-8 py-4 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105"><Link href="/verify"><span className="flex items-center"><Download className="mr-2 h-6 w-6"/>Get Certificate</span></Link></Button>
               </div>
               
               <div className="relative">
