@@ -1,4 +1,3 @@
-
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,7 +33,7 @@ const formSchema = z.object({
   delegateAddress: z.string().regex(/^0x[a-fA-F0-9]{40}$/, {
     message: "Invalid Ethereum wallet address.",
   }),
-  courseId: z.string().min(1, { message: "Please select a course." }), // Optional: delegate for a specific course or all
+  courseId: z.string().min(1, { message: "Please select a course." }), // Changed: now requires a value
 });
 
 export function DelegateAccessForm() {
@@ -50,7 +49,7 @@ export function DelegateAccessForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       delegateAddress: "",
-      courseId: "", // Set to empty to allow "All Courses" or specific selection
+      courseId: "", // This will now be required to be non-empty
     },
   });
 
@@ -59,9 +58,13 @@ export function DelegateAccessForm() {
     // In a real app, this would:
     // 1. Interact with a smart contract function to grant issuing rights.
     // 2. The smart contract would manage these permissions.
+    const courseName = values.courseId === "ALL_COURSES" 
+      ? "All Courses" 
+      : courses.find(c => c.id === values.courseId)?.name || values.courseId;
+    
     toast({
       title: "Delegation Request Sent!",
-      description: `Delegating issuing rights for course ${values.courseId || 'All Courses'} to ${values.delegateAddress.substring(0,10)}...`,
+      description: `Delegating issuing rights for ${courseName} to ${values.delegateAddress.substring(0,10)}...`,
     });
     form.reset();
   }
@@ -91,15 +94,15 @@ export function DelegateAccessForm() {
           name="courseId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Delegate for Specific Course (Optional)</FormLabel>
+              <FormLabel>Delegate for Specific Course</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a course or leave for all" />
+                    <SelectValue placeholder="Select a course" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="">All My Courses</SelectItem>
+                  <SelectItem value="ALL_COURSES">All My Courses</SelectItem>
                   {courses.map(course => (
                     <SelectItem key={course.id} value={course.id}>
                       {course.name} (ID: {course.id})
@@ -108,7 +111,7 @@ export function DelegateAccessForm() {
                 </SelectContent>
               </Select>
               <FormDescription>
-                If no course is selected, delegation applies to all your current and future courses.
+                Select a specific course or choose "All My Courses" for delegation across all courses.
               </FormDescription>
               <FormMessage />
             </FormItem>

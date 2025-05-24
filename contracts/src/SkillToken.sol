@@ -4,7 +4,6 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
  * @title SkillToken
@@ -12,14 +11,13 @@ import "@openzeppelin/contracts/utils/Counters.sol";
  * @author SkillToken Team
  */
 contract SkillToken is ERC721, ERC721URIStorage, AccessControl {
-    using Counters for Counters.Counter;
-
     // Roles
     bytes32 public constant TEACHER_ROLE = keccak256("TEACHER_ROLE");
     bytes32 public constant ISSUER_ROLE = keccak256("ISSUER_ROLE");
 
-    // Token counter
-    Counters.Counter private _tokenIdCounter;
+    // Counters
+    uint256 private _tokenIdCounter;
+    uint256 private _courseIdCounter;
 
     // Structs
     struct Course {
@@ -43,9 +41,6 @@ contract SkillToken is ERC721, ERC721URIStorage, AccessControl {
     mapping(uint256 => Certificate) public certificates;
     mapping(address => uint256[]) public studentCertificates;
     mapping(address => uint256[]) public teacherCourses;
-    
-    // Course counter
-    Counters.Counter private _courseIdCounter;
 
     // Events
     event CourseRegistered(uint256 indexed courseId, string name, address indexed owner);
@@ -78,8 +73,8 @@ contract SkillToken is ERC721, ERC721URIStorage, AccessControl {
     function registerCourse(string memory name) external onlyRole(TEACHER_ROLE) returns (uint256) {
         require(bytes(name).length > 0, "Course name cannot be empty");
         
-        _courseIdCounter.increment();
-        uint256 courseId = _courseIdCounter.current();
+        _courseIdCounter++;
+        uint256 courseId = _courseIdCounter;
         
         courses[courseId] = Course({
             name: name,
@@ -106,18 +101,18 @@ contract SkillToken is ERC721, ERC721URIStorage, AccessControl {
         address student,
         uint256 courseId,
         string memory filecoinHash,
-        string memory tokenURI
+        string memory metadataURI
     ) external onlyRole(ISSUER_ROLE) returns (uint256) {
         require(student != address(0), "Invalid student address");
         require(courses[courseId].active, "Course does not exist or is inactive");
         require(bytes(filecoinHash).length > 0, "Filecoin hash cannot be empty");
         
-        _tokenIdCounter.increment();
-        uint256 tokenId = _tokenIdCounter.current();
+        _tokenIdCounter++;
+        uint256 tokenId = _tokenIdCounter;
         
         // Mint NFT to student
         _safeMint(student, tokenId);
-        _setTokenURI(tokenId, tokenURI);
+        _setTokenURI(tokenId, metadataURI);
         
         // Store certificate data
         certificates[tokenId] = Certificate({
@@ -150,7 +145,7 @@ contract SkillToken is ERC721, ERC721URIStorage, AccessControl {
      * @param tokenId The certificate token ID
      */
     function validate(uint256 tokenId) external onlyRole(TEACHER_ROLE) {
-        require(_exists(tokenId), "Token does not exist");
+        require(tokenId > 0 && tokenId <= _tokenIdCounter, "Token does not exist");
         
         Certificate storage cert = certificates[tokenId];
         require(!cert.validated, "Certificate already validated");
@@ -206,7 +201,7 @@ contract SkillToken is ERC721, ERC721URIStorage, AccessControl {
      * @return Certificate struct
      */
     function getCertificate(uint256 tokenId) external view returns (Certificate memory) {
-        require(_exists(tokenId), "Token does not exist");
+        require(tokenId > 0 && tokenId <= _tokenIdCounter, "Token does not exist");
         return certificates[tokenId];
     }
 
@@ -216,7 +211,7 @@ contract SkillToken is ERC721, ERC721URIStorage, AccessControl {
      * @return Course struct
      */
     function getCourse(uint256 courseId) external view returns (Course memory) {
-        require(courseId > 0 && courseId <= _courseIdCounter.current(), "Course does not exist");
+        require(courseId > 0 && courseId <= _courseIdCounter, "Course does not exist");
         return courses[courseId];
     }
 
@@ -225,7 +220,7 @@ contract SkillToken is ERC721, ERC721URIStorage, AccessControl {
      * @return The current token counter value
      */
     function totalCertificates() external view returns (uint256) {
-        return _tokenIdCounter.current();
+        return _tokenIdCounter;
     }
 
     /**
@@ -233,7 +228,7 @@ contract SkillToken is ERC721, ERC721URIStorage, AccessControl {
      * @return The current course counter value
      */
     function totalCourses() external view returns (uint256) {
-        return _courseIdCounter.current();
+        return _courseIdCounter;
     }
 
     // Override functions required by Solidity
