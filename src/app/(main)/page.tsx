@@ -3,7 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, BookUser, CheckBadge, ShieldCheck } from "lucide-react";
+import { ArrowRight, BookUser, Check, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -46,7 +46,7 @@ export default function HomePage() {
         <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
           <CardHeader>
             <div className="flex items-center justify-center w-12 h-12 bg-primary/10 text-primary rounded-full mb-4">
-              <CheckBadge className="w-6 h-6" />
+              <Check className="w-6 h-6" />
             </div>
             <CardTitle className="text-2xl">Create Courses</CardTitle>
           </CardHeader>
