@@ -21,7 +21,7 @@ export default function HomePage() {
         <div className="container mx-auto text-center z-10">
           <div className="mb-8">
             <span className="inline-block px-4 py-2 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 rounded-full text-sm font-medium border border-purple-500/30 backdrop-blur-sm">
-              🚀 Революция в образовании Web3
+              🚀 Revolution in Web3 Education
             </span>
           </div>
           
@@ -30,19 +30,15 @@ export default function HomePage() {
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Децентрализованная образовательная платформа для изучения Web3, где знания превращаются в 
-            <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent font-semibold"> NFT сертификаты</span>, 
-            а сообщество управляет будущим образования
+            Decentralized educational platform for learning Web3, where knowledge turns into 
+            <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent font-semibold"> NFT certificates</span>, 
+            and the community governs the future of education
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">            <Button
-              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25"
-              asChild
-            >
-              <Link href="/courses">
-                Начать обучение
-              </Link>
-            </Button>                        <Button               className="px-8 py-4 border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black text-lg font-semibold rounded-full transition-all duration-300 backdrop-blur-sm bg-transparent"              asChild            >              <Link href="/governance">                <span className="flex items-center">                  <Users className="mr-2 h-6 w-6" />                  Присоединиться к DAO                </span>              </Link>            </Button>          </div>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+            <Button asChild className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25"><Link href="/courses">Start Learning</Link></Button>
+            <Button asChild className="px-8 py-4 border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black text-lg font-semibold rounded-full transition-all duration-300 backdrop-blur-sm bg-transparent"><Link href="/governance"><span className="flex items-center"><Users className="mr-2 h-6 w-6"/>Join the DAO</span></Link></Button>
+          </div>
           
           {/* Hero Visual */}
           <div className="relative mx-auto w-full max-w-4xl h-96 rounded-3xl overflow-hidden shadow-2xl border border-purple-500/20 backdrop-blur-sm">
@@ -67,10 +63,10 @@ export default function HomePage() {
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-              Возможности платформы
+              Platform Features
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Современные инструменты для создания, изучения и верификации навыков в Web3
+              Modern tools to create, learn, and verify Web3 skills
             </p>
           </div>
           
@@ -84,12 +80,12 @@ export default function HomePage() {
                   </div>
                 </div>
                 <CardTitle className="text-xl text-white group-hover:text-purple-300 transition-colors">
-                  Интерактивные курсы
+                  Interactive Courses
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-gray-300">
-                  Изучайте Solidity, DeFi, NFT и Web3 с помощью практических заданий и реальных проектов
+                  Learn Solidity, DeFi, NFT, and Web3 with hands-on tasks and real projects
                 </CardDescription>
               </CardContent>
             </Card>
@@ -102,12 +98,12 @@ export default function HomePage() {
                   </div>
                 </div>
                 <CardTitle className="text-xl text-white group-hover:text-cyan-300 transition-colors">
-                  NFT Сертификаты
+                  NFT Certificates
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-gray-300">
-                  Получайте уникальные Soulbound NFT токены как подтверждение ваших навыков
+                  Earn unique soulbound NFT tokens as proof of your skills
                 </CardDescription>
               </CardContent>
             </Card>
@@ -120,12 +116,12 @@ export default function HomePage() {
                   </div>
                 </div>
                 <CardTitle className="text-xl text-white group-hover:text-green-300 transition-colors">
-                  DAO Управление
+                  DAO Governance
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-gray-300">
-                  Участвуйте в принятии решений о развитии платформы через децентрализованное управление
+                  Take part in platform development decisions through decentralized governance
                 </CardDescription>
               </CardContent>
             </Card>
@@ -138,12 +134,12 @@ export default function HomePage() {
                   </div>
                 </div>
                 <CardTitle className="text-xl text-white group-hover:text-yellow-300 transition-colors">
-                  Верификация навыков
+                  Skill Verification
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-gray-300">
-                  Мгновенная проверка подлинности сертификатов благодаря блокчейн технологии
+                  Instant certificate authenticity check powered by blockchain
                 </CardDescription>
               </CardContent>
             </Card>
@@ -156,12 +152,12 @@ export default function HomePage() {
                   </div>
                 </div>
                 <CardTitle className="text-xl text-white group-hover:text-pink-300 transition-colors">
-                  Глобальное сообщество
+                  Global Community
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-gray-300">
-                  Общайтесь с единомышленниками и экспертами со всего мира в нашей DAO
+                  Connect with like-minded people and experts worldwide in our DAO
                 </CardDescription>
               </CardContent>
             </Card>
@@ -174,12 +170,12 @@ export default function HomePage() {
                   </div>
                 </div>
                 <CardTitle className="text-xl text-white group-hover:text-indigo-300 transition-colors">
-                  Достижения
+                  Achievements
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-gray-300">
-                  Зарабатывайте уникальные значки и награды за успехи в обучении
+                  Earn unique badges and rewards for learning achievements
                 </CardDescription>
               </CardContent>
             </Card>
@@ -198,29 +194,29 @@ export default function HomePage() {
             <div className="relative grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  Soulbound NFT Сертификаты
+                  Soulbound NFT Certificates
                 </h2>
                 <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                  Получайте уникальные неперемещаемые NFT токены как неопровержимое доказательство ваших навыков. 
-                  Эти цифровые сертификаты навсегда привязаны к вашему кошельку и не могут быть подделаны.
+                  Receive unique non-transferable NFT tokens as undeniable proof of your skills. 
+                  These digital certificates are forever linked to your wallet and cannot be forged.
                 </p>
                 
                 <div className="space-y-4 mb-8">
                   <div className="flex items-center gap-4">
                     <CheckCircle className="w-6 h-6 text-green-400" />
-                    <span className="text-gray-300">Неподдельные и проверяемые</span>
+                    <span className="text-gray-300">Genuine and verifiable</span>
                   </div>
                   <div className="flex items-center gap-4">
                     <CheckCircle className="w-6 h-6 text-green-400" />
-                    <span className="text-gray-300">Признаются работодателями Web3</span>
+                    <span className="text-gray-300">Recognized by Web3 employers</span>
                   </div>
                   <div className="flex items-center gap-4">
                     <CheckCircle className="w-6 h-6 text-green-400" />
-                    <span className="text-gray-300">Хранятся вечно в блокчейне</span>
+                    <span className="text-gray-300">Stored forever on-chain</span>
                   </div>
                 </div>
                 
-                                                <Button                   className="px-8 py-4 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105"                  asChild                >                  <Link href="/certificates">                    <span className="flex items-center">                      <Download className="mr-2 h-6 w-6" />                      Получить сертификат                    </span>                  </Link>                </Button>
+                <Button asChild className="px-8 py-4 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105"><Link href="/certificates"><span className="flex items-center"><Download className="mr-2 h-6 w-6"/>Get Certificate</span></Link></Button>
               </div>
               
               <div className="relative">
@@ -234,8 +230,8 @@ export default function HomePage() {
                     <h3 className="text-2xl font-bold mb-2">SkillToken Certificate #001</h3>
                     <p className="text-gray-400">Solidity Developer</p>
                     <div className="mt-4 text-sm text-gray-500">
-                      <p>Выдан: 15.01.2025</p>
-                      <p>Токен: 0x1234...5678</p>
+                      <p>Issued: 15 Jan 2025</p>
+                      <p>Token: 0x1234...5678</p>
                     </div>
                   </div>
                 </div>
@@ -250,10 +246,10 @@ export default function HomePage() {
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-              Сообщество и управление
+              Community & Governance
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Присоединяйтесь к децентрализованному сообществу, где каждый голос имеет значение
+              Join the decentralized community where every vote matters
             </p>
           </div>
           
@@ -265,11 +261,11 @@ export default function HomePage() {
                     <Users className="w-8 h-8 text-white" />
                   </div>
                 </div>
-                <CardTitle className="text-2xl text-white">Голосование</CardTitle>
+                <CardTitle className="text-2xl text-white">Voting</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-gray-300 text-center">
-                  Участвуйте в принятии ключевых решений о развитии платформы через DAO голосования
+                  Participate in key platform decisions through DAO voting
                 </CardDescription>
               </CardContent>
             </Card>
@@ -281,11 +277,11 @@ export default function HomePage() {
                     <Star className="w-8 h-8 text-white" />
                   </div>
                 </div>
-                <CardTitle className="text-2xl text-white">Предложения</CardTitle>
+                <CardTitle className="text-2xl text-white">Proposals</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-gray-300 text-center">
-                  Создавайте предложения по улучшению платформы и влияйте на её будущее
+                  Create proposals to improve the platform and shape its future
                 </CardDescription>
               </CardContent>
             </Card>
@@ -297,11 +293,11 @@ export default function HomePage() {
                     <Trophy className="w-8 h-8 text-white" />
                   </div>
                 </div>
-                <CardTitle className="text-2xl text-white">Награды</CardTitle>
+                <CardTitle className="text-2xl text-white">Rewards</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-gray-300 text-center">
-                  Получайте токены за активное участие в жизни сообщества и обучении
+                  Earn tokens for active participation in the community and learning
                 </CardDescription>
               </CardContent>
             </Card>
@@ -319,14 +315,15 @@ export default function HomePage() {
             
             <div className="relative">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
-                Готовы начать путешествие в Web3?
+                Ready to start your Web3 journey?
               </h2>
               <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
-                Присоединяйтесь к SkillToken DAO сегодня и станьте частью будущего децентрализованного образования
+                Join SkillToken DAO today and become part of the future of decentralized education
               </p>
               
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                                                <Button                   className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25"                  asChild                >                  <Link href="/register">                    <span className="flex items-center">                      Присоединиться сейчас                      <ChevronRight className="ml-2 h-6 w-6" />                    </span>                  </Link>                </Button>                                <Button                   className="px-8 py-4 border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black text-lg font-semibold rounded-full transition-all duration-300 backdrop-blur-sm bg-transparent"                  asChild                >                  <Link href="/verify">                    <span className="flex items-center">                      <Shield className="mr-2 h-6 w-6" />                      Проверить сертификат                    </span>                  </Link>                </Button>
+                <Button asChild className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25"><Link href="/register"><span className="flex items-center">Join Now<ChevronRight className="ml-2 h-6 w-6"/></span></Link></Button>
+                <Button asChild className="px-8 py-4 border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black text-lg font-semibold rounded-full transition-all duration-300 backdrop-blur-sm bg-transparent"><Link href="/verify"><span className="flex items-center"><Shield className="mr-2 h-6 w-6"/>Verify Certificate</span></Link></Button>
               </div>
             </div>
           </div>
