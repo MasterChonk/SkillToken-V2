@@ -32,7 +32,8 @@ contract CommunityVerifier is Ownable {
 
     modifier onlyDuringVoting(uint256 courseId) {
         VotingSession storage session = votingSessions[courseId];
-        if (block.timestamp < session.startTime + VOTING_DURATION) revert CommunityVerifier__VotingFinalized();
+        if (session.startTime == 0) revert CommunityVerifier__CourseProposalDoesNotExist();
+        if (block.timestamp > session.startTime + VOTING_DURATION) revert CommunityVerifier__VotingFinalized();
         if (session.finalized) revert CommunityVerifier__VotingFinalized();
         _;
     }
@@ -77,6 +78,7 @@ contract CommunityVerifier is Ownable {
     error CommunityVerifier__ProposalAlreadyExists();
     error CommunityVerifier__VotingStillActive();
     error CommunityVerifier__InvalidEXPAmount();
+    error CommunityVerifier__CourseProposalDoesNotExist();
 
 
     /*//////////////////////////////////////////////////////////////

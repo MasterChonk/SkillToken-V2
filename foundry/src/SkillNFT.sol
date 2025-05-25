@@ -25,8 +25,8 @@ contract SkillNFT is ERC721URIStorage, Ownable {
 
     mapping(address => mapping(uint256 => PendingNFT)) public pendingClaims; //student => courseId => PendingNFT
     mapping(address => mapping(uint256 => bool)) public hasClaimed;
-    mapping(uint256 => uint256) public courseIdOf;
-    mapping(uint256 => address) public teacherOf;
+    mapping(uint256 => uint256) public courseIdOf; //tokenId => courseId
+    mapping(uint256 => address) public teacherOf; //tokenId => teacher address
 
 
     /*//////////////////////////////////////////////////////////////
@@ -62,6 +62,7 @@ contract SkillNFT is ERC721URIStorage, Ownable {
     //////////////////////////////////////////////////////////////*/
 
     uint256 private nextTokenId;
+    uint256 private nextCourseId;
 
 
     /*//////////////////////////////////////////////////////////////
@@ -101,9 +102,6 @@ contract SkillNFT is ERC721URIStorage, Ownable {
     // function setApprovalForAll(address operator, bool approved) public virtual override(ERC721) {
     //     revert CourseNFT__SoulboundNFT_NotTransferable();
     // }
-
-
-
 
 
     function offerNFT(address student, uint256 courseId, string memory tokenURI) external {
