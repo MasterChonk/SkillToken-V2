@@ -10,33 +10,78 @@ contract CourseRegistry is Ownable {
     struct Course {
         address teacher;
         string name;
-        uint256 expReward;
         bool whitelisted;
+        uint256 expReward;
     }
 
     constructor() Ownable(msg.sender) {}
 
-    uint256 public courseCounter;
+
+
+
+    /*//////////////////////////////////////////////////////////////
+                                MAPPINGS
+    //////////////////////////////////////////////////////////////*/
+
+
     mapping(uint256 => Course) public courses;
+
+    
+    /*//////////////////////////////////////////////////////////////
+                                 EVENTS
+    //////////////////////////////////////////////////////////////*/
+
 
     event CourseCreated(uint256 indexed courseId, address indexed teacher, string name);
     event CourseWhitelisted(uint256 indexed courseId, uint256 expReward);
 
+
+    /*//////////////////////////////////////////////////////////////
+                                 ERRORS
+    //////////////////////////////////////////////////////////////*/
+
     error CourseRegistry__NotCourseTeacher();
     error CourseRegistry__InvalidEXPAmount();
+    error CommunityVerifier__AlreadySet();
+
+
+    /*//////////////////////////////////////////////////////////////
+                            STATE VARIABLES
+    //////////////////////////////////////////////////////////////*/
+
+    uint256 public courseCounter;
+    address public communityVerifier;
+    bool public isCommunityVerifierSet;
+
+
+
+    /*//////////////////////////////////////////////////////////////
+                               FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
+    
 
     function createCourse(string calldata name) external returns (uint256 courseId) {
         courseId = ++courseCounter;
-        courses[courseId] = Course(msg.sender, name, 0, false);
+        courses[courseId] = Course(msg.sender, name, false, 0);
         emit CourseCreated(courseId, msg.sender, name);
     }
 
+    function setCommunityVerifier(address _communityVerifier) external onlyOwner {
+        if (isCommunityVerifierSet) revert CommunityVerifier__AlreadySet();
+        communityVerifier = _communityVerifier;
+        isCommunityVerifierSet = true;
+    }
+
     function whitelistCourse(uint256 courseId, uint256 expReward) external onlyOwner {
+        if (msg.sender != owner() && msg.sender != communityVerifier) {
+            revert CourseRegistry__NotCourseTeacher();
+        }
         if (expReward < 20 || expReward > 100) revert CourseRegistry__InvalidEXPAmount();
         courses[courseId].whitelisted = true;
         courses[courseId].expReward = expReward;
         emit CourseWhitelisted(courseId, expReward);
     }
+
 
     function getCourse(uint256 courseId) external view returns (Course memory) {
         return courses[courseId];

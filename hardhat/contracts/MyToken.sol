@@ -65,7 +65,7 @@ contract MyToken is ERC721, ERC721URIStorage {
         _;
     }
     function createCourse(string memory _name, string memory urlCourseImage) external _onlyTeacher(msg.sender){ 
-        require(Teachers[getHash(_name)] != address(0), "Course already exist");
+        require(Teachers[getHash(_name)] == address(0), "Course already exist");
         Courses[msg.sender][getHash(_name)] = true;
         Teachers[getHash(_name)] = msg.sender;
         emit courses(msg.sender, getHash(_name), _name, urlCourseImage);

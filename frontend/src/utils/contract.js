@@ -40,7 +40,7 @@ export async function ethersInitialize() {
       } catch (error) {
         console.error("Address in ABI:", error.message);
       }
-      console.log(CONTRACT_ADDRESS, CONTRACT_ABI)
+      // console.log(CONTRACT_ADDRESS, CONTRACT_ABI)
 
       //handling the wallet change event
   window.ethereum?.on('accountsChanged', async (accounts) => {
@@ -54,7 +54,7 @@ export async function ethersInitialize() {
     global.provider = new ethers.BrowserProvider(window.ethereum);
     global.signer = await provider.getSigner();
     global.signer = await provider.getSigner();
-    global.contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+    global.contract = new ethers.Contract(global.CONTRACT_ADDRESS, global.CONTRACT_ABI, signer);
     console.log("Acount changed to:", currentAccount);
   });
 
@@ -65,6 +65,9 @@ export async function ethersInitialize() {
   });
 
   window.connectWallet = connectWallet;
+  window.getCourses = getCourses;
+  window.registerAsTeacher = registerAsTeacher;
+  window.createCourse = createCourse;
   window.createOrganization = createOrganization;
 }
   
@@ -85,7 +88,7 @@ export async function ethersInitialize() {
 
       global.provider = new ethers.BrowserProvider(window.ethereum);
       global.signer = await provider.getSigner();
-      global.contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+      global.contract = new ethers.Contract(global.CONTRACT_ADDRESS, global.CONTRACT_ABI, signer);
 
       console.log("Conected to MetaMask:", currentAccount);
     } catch (error) {
@@ -180,6 +183,33 @@ export async function createCourse(courseName) {
   console.log(tx);
 }
 
+export async function registerAsTeacher(name) {
+  console.log("registerAsTeacher called with name:", name);
+  if (!global.contract) {
+    global.contract = await connectWallet();
+  }
+  let tx, reason;
+  // await global.contract.createCourse(courseName);
+  try {
+    //change to name of function in solidity, give all required parameters for solidity function
+    tx = await global.contract.registerAsTeacher(name);
+    
+  } catch (error) {
+    reason = error.reason;
+  }
+  if(tx !== undefined){
+    //code if successfull used solidity function
+
+  } else if(reason) {
+    //code if action in solidity not allowed
+    console.log(reason);
+
+  } else {
+    console.log("network error")
+  }
+  console.log(tx);
+}
+
 
 
 
@@ -201,6 +231,35 @@ export async function getLiquidityEvents() {
          console.log(orgAddress);
          console.log(name);
     }
+}
+
+export async function getCourses() {
+    //address for selection by address
+    if (!global.contract) {
+    global.contract = await connectWallet();
+   }
+    let _address;
+    try {
+     _address = await global.signer.getAddress();
+    } catch (error) {
+    console.error("Error getting signer address:", error);
+    return [];
+    }
+    //name of event in solidity and indexed value(s)
+    const eventFilter = global.contract.filters.courses(_address);
+    const fromBlock = 0;
+    const toBlock = 'latest';
+    const events = await global.contract.queryFilter(eventFilter, fromBlock, toBlock);
+    console.log(events)
+    let arr = [];
+    for (const evt of events) {
+        //change to variabels names in solidity
+        const { teacher, id, name } = evt.args;
+        arr.push({ teacherAddress: teacher, id: id, name: name });
+         console.log(orgAddress);
+         console.log(name);
+    }
+    return arr;
 }
 
 // getLiquidityEvents();

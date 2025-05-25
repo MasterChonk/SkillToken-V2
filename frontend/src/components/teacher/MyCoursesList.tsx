@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen } from 'lucide-react';
+import { getCourses, ethersInitialize } from '@/utils/contract';
 
 interface Course {
   id: string;
@@ -14,10 +15,17 @@ interface Course {
 }
 
 // Mock data - in a real app, this would come from a state management solution or API
+await ethersInitialize();
+ // Ensure ethers is initialized before fetching courses
+let arr: any;
+try {
+  arr = await getCourses();
+} catch (error) {
+  console.log(error)
+}
+console.log(arr)
 const MOCK_COURSES: Course[] = [
-  { id: "COURSE-1", name: "Advanced Solidity Programming", teacherAddress: "0xTeacherMockAddress1234567890" },
-  { id: "COURSE-2", name: "Decentralized Application Design", teacherAddress: "0xTeacherMockAddress1234567890" },
-  { id: "COURSE-3", name: "NFT Fundamentals and Marketplaces", teacherAddress: "0xOtherTeacherAddress" }, // Example of course by another teacher
+  ...arr
 ];
 
 export function MyCoursesList() {
@@ -28,7 +36,7 @@ export function MyCoursesList() {
 
   useEffect(() => {
     // Filter courses to show only those created by the current teacher
-    const teacherCourses = MOCK_COURSES.filter(course => course.teacherAddress === currentUserAddress);
+    const teacherCourses = MOCK_COURSES
     setCourses(teacherCourses);
   }, [currentUserAddress]);
 
@@ -54,7 +62,7 @@ export function MyCoursesList() {
       <CardContent>
         <ScrollArea className="h-[300px] w-full rounded-md border p-4">
           <ul className="space-y-4">
-            {courses.map((course) => (
+            {courses.map((course: any) => (
               <li key={course.id} className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg shadow-sm hover:bg-secondary/70 transition-colors">
                 <div className="flex items-center">
                   <BookOpen className="h-5 w-5 mr-3 text-primary" />

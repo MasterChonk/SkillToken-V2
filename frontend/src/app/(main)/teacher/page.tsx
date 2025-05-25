@@ -10,14 +10,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUser } from "@/contexts/UserContext";
 import { BookMarked, UsersRound, Award, Loader2, Building2 } from "lucide-react";
 import Link from "next/link";
-import { createOrganization } from "@/utils/contract";
+import { registerAsTeacher, ethersInitialize } from "@/utils/contract"; // Ensure this function is defined in your utils
 
+try {
+await ethersInitialize();
+} catch (error) {
+  console.error("Error initializing ethers:", error);
+}
 export default function TeacherPage() {
   const { address, isLoading, role } = useUser();
 
   const handleCreateOrganisation = () => {
     // Add your organization creation logic here
-    createOrganization();
+    // need to add proper input for teacher name
+    registerAsTeacher("cxdrt");
     // Example: Open a modal, navigate to a new page, or call an API
     // You could also add state management, form handling, etc.
   };
@@ -63,7 +69,7 @@ export default function TeacherPage() {
             className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
           >
             <Building2 className="h-5 w-5" />
-            Create Organisation
+            Register as Teacher
           </Button>
         </div>
       </header>
