@@ -6,7 +6,7 @@ import "./ExpToken.sol";
 import "./CourseRegistry.sol";
 
 /// @title CourseVerificationCommunityVerifier - EXP-based voting to verify courses
-contract CourseVerificationCommunityVerifier is Ownable {
+contract CommunityVerifier is Ownable {
 
     struct Vote {
         bool support;

@@ -25,6 +25,8 @@ contract SkillNFT is ERC721URIStorage, Ownable {
 
     mapping(address => mapping(uint256 => PendingNFT)) public pendingClaims; //student => courseId => PendingNFT
     mapping(address => mapping(uint256 => bool)) public hasClaimed;
+    mapping(uint256 => uint256) public courseIdOf;
+    mapping(uint256 => address) public teacherOf;
 
 
     /*//////////////////////////////////////////////////////////////
@@ -78,8 +80,9 @@ contract SkillNFT is ERC721URIStorage, Ownable {
                          SOULBOUND RESTRICTIONS
     //////////////////////////////////////////////////////////////*/
 
+    //Doesn't work for some reason
 
-    // function transferFrom(address from, address to, uint256 tokenId) public virtual override(thisContract) {
+    // function transferFrom(address from, address to, uint256 tokenId) public virtual override {
     //     revert CourseNFT__SoulboundNFT_NotTransferable();
     // }
 
@@ -87,7 +90,7 @@ contract SkillNFT is ERC721URIStorage, Ownable {
     //     revert CourseNFT__SoulboundNFT_NotTransferable();
     // }
 
-    // function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public virtual override(ERC721) {
+    // function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public virtual override(IERC721) {
     //     revert CourseNFT__SoulboundNFT_NotTransferable();
     // }
 
@@ -120,6 +123,12 @@ contract SkillNFT is ERC721URIStorage, Ownable {
         uint256 tokenId = nextTokenId++;
         _mint(msg.sender, tokenId);
         _setTokenURI(tokenId, pending.tokenURI);
+
+            // ✅ Store courseId and teacher info
+        courseIdOf[tokenId] = _courseId;
+        teacherOf[tokenId] = pending.teacher;
+
+
         emit NFTClaimed(msg.sender, tokenId, pending.courseId);
 
         CourseRegistry.Course memory course = i_registry.getCourse(pending.courseId);
