@@ -7,9 +7,24 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 /// @title EXPToken - Soulbound ERC20 for EXP
 contract EXPToken is ERC20, Ownable {
 
+    /*//////////////////////////////////////////////////////////////
+                                 EVENTS
+    //////////////////////////////////////////////////////////////*/
+
     event SoulboundTransfer(address indexed from, address indexed to, uint256 amount);
+
+
     
+    /*//////////////////////////////////////////////////////////////
+                                 ERRORS
+    //////////////////////////////////////////////////////////////*/
+
     error EXPToken__SoulboundTransferNotAllowed();
+
+    
+    /*//////////////////////////////////////////////////////////////
+                               FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
 
     constructor() ERC20("Experience Points", "EXP") Ownable(msg.sender) {}
 

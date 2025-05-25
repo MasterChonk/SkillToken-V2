@@ -7,8 +7,6 @@ import "./CourseRegistry.sol";
 
 /// @title CourseVerificationCommunityVerifier - EXP-based voting to verify courses
 contract CourseVerificationCommunityVerifier is Ownable {
-    EXPToken public expToken;
-    CourseRegistry public courseRegistry;
 
     struct Vote {
         bool support;
@@ -27,6 +25,10 @@ contract CourseVerificationCommunityVerifier is Ownable {
         mapping(address => Vote) votes;
     }
 
+    /*//////////////////////////////////////////////////////////////
+                               MODIFIERS
+    //////////////////////////////////////////////////////////////*/
+
 
     modifier onlyDuringVoting(uint256 courseId) {
         VotingSession storage session = votingSessions[courseId];
@@ -35,16 +37,37 @@ contract CourseVerificationCommunityVerifier is Ownable {
         _;
     }
 
+    /*//////////////////////////////////////////////////////////////
+                                MAPPINGS
+    //////////////////////////////////////////////////////////////*/
+
     mapping(uint256 => VotingSession) public votingSessions; // courseId => proposal
+
+
+    /*//////////////////////////////////////////////////////////////
+                         CONSTANTS / IMMUTABLES
+    //////////////////////////////////////////////////////////////*/
 
     uint256 public constant VOTING_DURATION = 14 days;
     uint256 public constant MIN_TOTAL_EXP = 2000;
     uint256 public constant MIN_VOTERS = 100;
     uint256 public constant APPROVAL_THRESHOLD = 70; // 70% approval required
+    EXPToken public immutable i_expToken;
+    CourseRegistry public immutable i_courseRegistry;
+
+
+    /*//////////////////////////////////////////////////////////////
+                                 EVENTS
+    //////////////////////////////////////////////////////////////*/
 
     event Voted(address indexed voter, uint256 indexed courseId, bool support, uint256 weight);
     event CourseVerified(uint256 indexed);
     event VerificationProposed(uint256 indexed, address indexed);
+
+
+    /*//////////////////////////////////////////////////////////////
+                                 ERRORS
+    //////////////////////////////////////////////////////////////*/
 
     error CommunityVerifier__AlreadyVoted();
     error CommunityVerifier__InsufficientEXP();
@@ -55,16 +78,22 @@ contract CourseVerificationCommunityVerifier is Ownable {
     error CommunityVerifier__VotingStillActive();
     error CommunityVerifier__InvalidEXPAmount();
 
+
+    /*//////////////////////////////////////////////////////////////
+                               FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
+
+
     constructor(address _expToken, address _courseRegistry) Ownable(msg.sender) {
-        expToken = EXPToken(_expToken);
-        courseRegistry = CourseRegistry(_courseRegistry);
+        i_expToken = EXPToken(_expToken);
+        i_courseRegistry = CourseRegistry(_courseRegistry);
     }
 
 
     function proposeCourseVerification(uint256 _courseId, uint256 _exp) external {
         if (_exp < 20 || _exp > 100) revert CommunityVerifier__InvalidEXPAmount();
         votingSessions[_courseId].expForCompletion = _exp;
-        CourseRegistry.Course memory course = courseRegistry.getCourse(_courseId);
+        CourseRegistry.Course memory course = i_courseRegistry.getCourse(_courseId);
         if (course.teacher == address(0)) revert CommunityVerifier__CourseDoesNotExist();
         if (course.whitelisted) revert CommunityVerifier__CourseAlreadyWhitelisted();
         if (votingSessions[_courseId].startTime != 0) revert CommunityVerifier__ProposalAlreadyExists();
@@ -80,13 +109,13 @@ contract CourseVerificationCommunityVerifier is Ownable {
     /// @param courseId The course to vote on
     /// @param support True = approve, False = reject
     function vote(uint256 courseId, bool support) external onlyDuringVoting(courseId) {
-        CourseRegistry.Course memory course = courseRegistry.getCourse(courseId);
+        CourseRegistry.Course memory course = i_courseRegistry.getCourse(courseId);
         if (course.whitelisted) revert CommunityVerifier__CourseAlreadyWhitelisted();
 
         VotingSession storage session = votingSessions[courseId];
         if (session.hasVoted[msg.sender]) revert CommunityVerifier__AlreadyVoted();
 
-        uint256 balance = expToken.balanceOf(msg.sender);
+        uint256 balance = i_expToken.balanceOf(msg.sender);
         if (balance == 0) revert CommunityVerifier__InsufficientEXP();
 
         session.hasVoted[msg.sender] = true;
@@ -119,7 +148,7 @@ contract CourseVerificationCommunityVerifier is Ownable {
             uint256 supportPercent = (session.totalSupport * 100) / session.totalExp;
             uint256 expReward = session.expForCompletion;
             if (supportPercent >= APPROVAL_THRESHOLD) {
-                courseRegistry.whitelistCourse(_courseId, expReward);
+                i_courseRegistry.whitelistCourse(_courseId, expReward);
                 emit CourseVerified(_courseId);
             }
         }

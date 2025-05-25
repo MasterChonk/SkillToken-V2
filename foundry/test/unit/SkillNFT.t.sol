@@ -12,6 +12,7 @@ contract SkillNFTTest is Test {
     address public owner;
     address public teacher;
     address public student;
+    address public randomUser;
 
     CourseRegistry public courseRegistry;
     SkillNFT public skillNFT;
@@ -21,6 +22,7 @@ contract SkillNFTTest is Test {
         owner = makeAddr("owner");
         teacher = makeAddr("teacher");
         student = makeAddr("student");
+        randomUser = makeAddr("randomUser");
         vm.startPrank(owner);
         courseRegistry = new CourseRegistry();
         skillNFT = new SkillNFT(address(courseRegistry));
@@ -41,8 +43,8 @@ contract SkillNFTTest is Test {
         assertEq(storedTokenURI, "ipfs://tokenURI", "Token URI doesn't match");
     }
 
-    function testAcceptNFT() public {
-        uint256 expReward = 50;
+    function testAcceptNFT(uint256 _expReward) public {
+        uint expReward = bound(_expReward, 20, 100); // Ensure expReward is between 20 and 100
         vm.prank(teacher);
         uint256 courseId = courseRegistry.createCourse("Solidity Basics");
         vm.prank(owner);
@@ -68,6 +70,24 @@ contract SkillNFTTest is Test {
 
         assertEq(studentExpBalance, expReward, "Student EXP balance doesn't match");
         assertEq(teacherExpBalance, expReward * 15 / 100, "Teacher EXP balance doesn't match");
+    }
+
+    function testSoulboundNotTransferable() public {
+        vm.startPrank(teacher);
+        uint256 courseId = courseRegistry.createCourse("Solidity Basics");
+        skillNFT.offerNFT(student, courseId, "ipfs://tokenURI");
+        vm.stopPrank();
+
+        vm.prank(student);
+        uint256 tokenId = skillNFT.acceptNFT(courseId);
+
+        // Attempt to transfer the NFT
+        vm.expectRevert("CourseNFT__SoulboundNFT_NotTransferable");
+        skillNFT.transferFrom(student, randomUser, tokenId);
+
+        // Attempt to safeTransfer the NFT
+        vm.expectRevert("CourseNFT__SoulboundNFT_NotTransferable");
+        skillNFT.safeTransferFrom(student, randomUser, tokenId);
     }
 }
 

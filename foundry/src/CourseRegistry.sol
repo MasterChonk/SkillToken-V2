@@ -16,18 +16,49 @@ contract CourseRegistry is Ownable {
 
     constructor() Ownable(msg.sender) {}
 
-    uint256 public courseCounter;
-    address public communityVerifier;
-    bool public isCommunityVerifierSet;
+
+
+
+    /*//////////////////////////////////////////////////////////////
+                                MAPPINGS
+    //////////////////////////////////////////////////////////////*/
+
 
     mapping(uint256 => Course) public courses;
+
+    
+    /*//////////////////////////////////////////////////////////////
+                                 EVENTS
+    //////////////////////////////////////////////////////////////*/
+
 
     event CourseCreated(uint256 indexed courseId, address indexed teacher, string name);
     event CourseWhitelisted(uint256 indexed courseId, uint256 expReward);
 
+
+    /*//////////////////////////////////////////////////////////////
+                                 ERRORS
+    //////////////////////////////////////////////////////////////*/
+
     error CourseRegistry__NotCourseTeacher();
     error CourseRegistry__InvalidEXPAmount();
     error CommunityVerifier__AlreadySet();
+
+
+    /*//////////////////////////////////////////////////////////////
+                            STATE VARIABLES
+    //////////////////////////////////////////////////////////////*/
+
+    uint256 public courseCounter;
+    address public communityVerifier;
+    bool public isCommunityVerifierSet;
+
+
+
+    /*//////////////////////////////////////////////////////////////
+                               FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
+    
 
     function createCourse(string calldata name) external returns (uint256 courseId) {
         courseId = ++courseCounter;
@@ -41,8 +72,8 @@ contract CourseRegistry is Ownable {
         isCommunityVerifierSet = true;
     }
 
-    function whitelistCourse(uint256 courseId, uint256 expReward) external {
-        if (msg.sender != owner() && msg.sender != courses[courseId].teacher) {
+    function whitelistCourse(uint256 courseId, uint256 expReward) external onlyOwner {
+        if (msg.sender != owner() && msg.sender != communityVerifier) {
             revert CourseRegistry__NotCourseTeacher();
         }
         if (expReward < 20 || expReward > 100) revert CourseRegistry__InvalidEXPAmount();
