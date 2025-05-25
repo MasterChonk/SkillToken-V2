@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { PlusCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { createCourse, connectWallet} from "@/utils/contract.js";
 
 // This would typically be stored and managed by the parent component or a global state
 // For now, it's just a local demonstration.
@@ -50,6 +51,8 @@ export function CreateCourseForm({ onCourseCreated }: CreateCourseFormProps) {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+      console.log(values.courseName)
+    createCourse(values.courseName);
     const newCourseId = `COURSE-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
     console.log("Creating course:", values.courseName, "ID:", newCourseId);
     // In a real app, you'd save this to a backend/blockchain

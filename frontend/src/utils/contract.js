@@ -148,6 +148,42 @@ export async function createOrganization() {
 }
 
 
+
+
+
+
+
+
+export async function createCourse(courseName) {
+  if (!global.contract) {
+    global.contract = await connectWallet();
+  }
+  let tx, reason;
+  // await global.contract.createCourse(courseName);
+  try {
+    //change to name of function in solidity, give all required parameters for solidity function
+    tx = await global.contract.createCourse(courseName, "");
+    
+  } catch (error) {
+    reason = error.reason;
+  }
+  if(tx !== undefined){
+    //code if successfull used solidity function
+
+  } else if(reason) {
+    //code if action in solidity not allowed
+    console.log(reason);
+
+  } else {
+    console.log("network error")
+  }
+  console.log(tx);
+}
+
+
+
+
+
 export async function getLiquidityEvents() {
     //address for selection by address
     const _address = await signer.getAddress();
